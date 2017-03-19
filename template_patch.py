@@ -10,24 +10,19 @@ claim_label = {
                 }
               }
 
-
-
 with open('ocp_mysql_template.json') as json_file:
     data = json.load(json_file)
-    #print(type(data))
+    for index, kind_dict in enumerate(data['objects']):
+         #Loop through and get index value
+         #print('INDEX: {}'.format(index))
+
+         if 'PersistentVolumeClaim' in kind_dict['kind']:
+             print('Found you: {}'.format(index))
+             data['objects'][index]['spec'].update(claim_label)
+
     #pprint(data)
-    #print(data['objects'])
 
-    #Just prints out all the objects out of the template
-    #print_data = json.dumps(data['objects'],indent=4)
-    #print(print_data)
-    for template_obj in data['objects']:
-        if 'kind' in template_obj:
-            #print the value of kind
-            print(template_obj['kind'])
-            #print(template_obj['kind']['spec'])
-
-#with open('out.txt', 'w') as outfile:
-#    json.dump(data, outfile,indent=4)
+with open('out.txt', 'w') as outfile:
+    json.dump(data, outfile,indent=4)
 
 # vim: ai et ts=4 sts=4 sw=4 nu
