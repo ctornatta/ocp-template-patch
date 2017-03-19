@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import json
-from pprint import pprint
+from collections import OrderedDict
 
 claim_label = {
                 "selector": {
@@ -11,16 +11,17 @@ claim_label = {
               }
 
 with open('ocp_mysql_template.json') as json_file:
-    data = json.load(json_file)
+
+    # load json file and keep the order
+    data = json.load(json_file, object_pairs_hook=OrderedDict)
+
+    # Since 'objects' is a list we need to get the index
     for index, kind_dict in enumerate(data['objects']):
-         #Loop through and get index value
-         #print('INDEX: {}'.format(index))
-
          if 'PersistentVolumeClaim' in kind_dict['kind']:
-             print('Found you: {}'.format(index))
-             data['objects'][index]['spec'].update(claim_label)
 
-    #pprint(data)
+            # Update the 'spec' dictionary with the claim label
+            data['objects'][index]['spec'].update(claim_label)
+
 
 with open('out.txt', 'w') as outfile:
     json.dump(data, outfile,indent=4)
