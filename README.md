@@ -2,7 +2,7 @@
 
 ## Overview
 
-This python script applies a label selector to a persistent volume claim object within an OpenShift template. It simply reads in a template JSON file and writes the modified template to the file.
+This python script applies a label selector to a persistent volume claim object within an OpenShift template. It simply reads in a template JSON file and writes the modified template to the file specified.
 
 
 ## Usage
